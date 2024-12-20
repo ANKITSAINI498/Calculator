@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Calculator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./css.css">
+
+</head>
+
+<body class="img-fluid" background="./bgpic.jpg">
+    <div
+        class="container mx-10 mt-5 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3">
+        <center>
+            <h2 class="m-5">Personal Calculator</h2>
+        </center>
+        <div class="row g-2">
+            <div class="col-12 input-container">
+                <input id="display" class=" p-3" placeholder="Enter The Numbers" disabled></input>
+            </div>
+        </div>
+
+        <div class="row g-2 mt-2">
+            <button class="col-3 p-2 fs-1 operator" data-operator="+">+</button>
+            <button class="col-3 p-2 fs-1 operator" data-operator="-">-</button>
+            <button class="col-3 p-2 fs-1 operator" data-operator="*">*</button>
+            <button class="col-3 p-2 fs-1 operator" data-operator="/">/</button>
+        </div>
+
+        <div class="row g-2 mt-2 mb-5">
+            <button class="col-3 p-2 fs-3 num">1</button>
+            <button class="col-3 p-2 fs-3 num">2</button>
+            <button class="col-3 p-2 fs-3 num">3</button>
+            <button class="col-3 p-2 fs-3 num">4</button>
+            <button class="col-3 p-2 fs-3 num">5</button>
+            <button class="col-3 p-2 fs-3 num">6</button>
+            <button class="col-3 p-2 fs-3 num">7</button>
+            <button class="col-3 p-2 fs-3 num">8</button>
+            <button class="col-3 p-2 fs-3 num">9</button>
+            <button class="col-3 p-2 fs-3 num">0</button>
+
+            <button class="col-3 p-2 fs-3" id="equals">=</button>
+            
+            <button class="col-3 p-2 fs-3" id="clear">Clear</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+
+        var currentInput = '';
+
+             var operator = '';
+
+         var firstNum = '';
+
+        var secondNum = '';
+
+
+        $(".num").click(function () {
+            currentInput += $(this).text();
+            $("#display").val(currentInput);
+        });
+
+
+        $(".operator").click(function () {
+            if (firstNum === '') {
+                firstNum = currentInput;
+                operator = $(this).data('operator');
+                currentInput = '';
+
+            } else if (currentInput !== '') {
+                secondNum = currentInput;
+                firstNum = calculate(firstNum, secondNum, operator);
+                operator = $(this).data('operator');
+                currentInput = '';
+                $("#display").val(firstNum);
+            }
+        });
+
+        $("#equals").click(function () {
+            if (firstNum !== '' && currentInput !== '') {
+                secondNum = currentInput;
+                firstNum = calculate(firstNum, secondNum, operator);
+                $("#display").val(firstNum);
+                currentInput = firstNum;
+                operator = '';
+                secondNum = '';
+            }
+        });
+
+        $("#clear").click(function () {
+            firstNum = '';
+            secondNum = '';
+            operator = '';
+            currentInput = '';
+            $("#display").val('');
+        });
+
+        function calculate(num1, num2, operator) {
+            num1 = parseFloat(num1);
+            num2 = parseFloat(num2);
+            switch (operator) {
+                case '+':
+                    return num1 + num2;
+                case '-':
+                    return num1 - num2;
+                case '*':
+                    return num1 * num2;
+                case '/':
+                    if (num2 !== 0) {
+                        return num1 / num2;
+                    } else {
+                        alert("Cannot divide by zero!");
+                        return num1;
+                    }
+                default:
+                    return num1;
+            }
+        }
+    </script>
+</body>
+
+</html>
